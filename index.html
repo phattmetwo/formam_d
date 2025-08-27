@@ -5,6 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>บ้านมาทรัพย์ ร่ำรวย</title>
   <link rel="stylesheet" href="style.css">
+
+  <style>
+    .table-wrap {
+      overflow-x: auto;
+      overflow-y: hidden;
+      white-space: nowrap;
+    }
+  </style>
+
 </head>
 <body>
   <div class="container">
@@ -30,53 +39,54 @@
     <!-- แท็บรายการธุรกรรม (เดิม) -->
     <div id="transactions-tab" class="tab-content">
       <!-- Toolbar -->
-      <div class="panel toolbar">
-        <div class="group">
-          <input id="period" class="w-sm" type="number" min="1" placeholder="งวดที่" />
-          <input id="date" class="w-lg" type="date" placeholder="วันที่" />
-          <input id="house" class="w-md" type="text" placeholder="บ้าน/กลุ่ม" />
-          <select id="pool" class="w-md">
-            <option value="">เลือกวงแชร์</option>
-          </select>
-          <input id="receive" class="w-md" type="number" min="0" step="0.01" placeholder="รับ (฿)" />
-          <input id="pay" class="w-md" type="number" min="0" step="0.01" placeholder="จ่าย (฿)" />
-          <input id="note" class="w-md" type="text" placeholder="หมายเหตุ" />
-          <button id="addRow" class="btn-primary">เพิ่มรายการ</button>
-        </div>
-        <div class="group">
-          <select id="filterHouse">
-            <option value="">บ้านทั้งหมด</option>
-          </select>
-          <select id="filterPool">
-            <option value="">วงแชร์ทั้งหมด</option>
-          </select>
-          <input id="search" type="search" placeholder="ค้นหา (บ้าน/ชื่อวงแชร์/หมายเหตุ)" />
-          <button id="clearFilters" class="btn-outline">ล้างตัวกรอง</button>
-        </div>
-        <div class="group" style="margin-left:auto">
-          <button id="exportCsv" title="ส่งออกเป็น CSV">ส่งออก CSV</button>
-          <label for="importCsv" class="btn-outline" style="cursor:pointer">นำเข้า CSV</label>
-          <input id="importCsv" type="file" accept=".csv" style="display:none" />
-          <button id="resetAll" class="btn-danger" title="ลบข้อมูลทั้งหมด">ล้างข้อมูล</button>
-        </div>
-      </div>
+      
+<div class="panel toolbar">
+  <!-- บรรทัดบน: เพิ่มรายการธุรกรรม -->
+  <div class="group top-row">
+    <input id="date" class="w-lg" type="date" placeholder="วันที่" />
+    <select id="pool" class="w-md"><option value="">วงแชร์ทั้งหมด</option></select>
+    <select id="house" class="w-md"><option value="">บ้านทั้งหมด</option></select>
+    <input id="receive" class="w-md" type="number" min="0" step="0.01" placeholder="รับ (฿)" />
+    <input id="pay" class="w-md" type="number" min="0" step="0.01" placeholder="จ่าย (฿)" />
+    <input id="note" class="w-md" type="text" placeholder="หมายเหตุ" />
+    <button id="addRow" class="btn-primary">เพิ่มรายการ</button>
+  </div>
 
-      <!-- Table -->
-      <div class="panel table-wrap fade-in" style="margin-top:12px">
+  <!-- บรรทัดล่าง: ฟิลเตอร์ -->
+  <div class="group bottom-row">
+    <input id="filterDate" type="date" />
+    <select id="filterPool"><option value="">วงแชร์ทั้งหมด</option></select>
+    <select id="filterHouse"><option value="">บ้านทั้งหมด</option></select>
+    <input id="search" type="search" placeholder="ค้นหา (บ้าน/ชื่อวงแชร์/หมายเหตุ)" />
+    <button id="clearFilters" class="btn-outline">ล้างตัวกรอง</button>
+  </div>
+
+  <!-- ส่วนเครื่องมืออื่นๆ -->
+  <div class="group" style="margin-left:auto">
+    <button id="exportCsv" title="ส่งออกเป็น CSV">ส่งออก CSV</button>
+    <label for="importCsv" class="btn-outline" style="cursor:pointer">นำเข้า CSV</label>
+    <input id="importCsv" type="file" accept=".csv" style="display:none" />
+    <button id="resetAll" class="btn-danger" title="ลบข้อมูลทั้งหมด">ล้างข้อมูล</button>
+  </div>
+</div>
+
+<div class="panel table-wrap fade-in" style="margin-top:12px">
         <table id="dataTable">
-          <thead>
-            <tr>
-              <th class="sortable" data-key="period">งวดที่ <span class="arrow">▼</span></th>
-              <th class="sortable" data-key="date">วันที่ <span class="arrow">▼</span></th>
-              <th class="sortable" data-key="house">บ้าน</th>
-              <th class="sortable" data-key="pool">ชื่อวงแชร์</th>
-              <th class="sortable" data-key="receive" style="text-align:right">รับ</th>
-              <th class="sortable" data-key="pay" style="text-align:right">จ่าย</th>
-              <th class="sortable" data-key="net" style="text-align:right">สุทธิ</th>
-              <th>หมายเหตุ</th>
-              <th class="center">การทำงาน</th>
-            </tr>
-          </thead>
+          
+<thead>
+  <tr>
+    <th class="sortable" data-key="period">งวดที่ <span class="arrow">▼</span></th>
+    <th class="sortable" data-key="date">วันที่ <span class="arrow">▼</span></th>
+    <th class="sortable" data-key="pool">ชื่อวงแชร์ <span class="arrow">▼</span></th>
+    <th class="sortable" data-key="house">บ้าน <span class="arrow">▼</span></th>
+    <th class="sortable" data-key="receive" style="text-align:right">รับ <span class="arrow">▼</span></th>
+    <th class="sortable" data-key="pay" style="text-align:right">จ่าย <span class="arrow">▼</span></th>
+    <th class="sortable" data-key="net" style="text-align:right">สุทธิ <span class="arrow">▼</span></th>
+    <th>หมายเหตุ</th>
+    <th class="center">การทำงาน</th>
+  </tr>
+</thead>
+
           <tbody id="tableBody"></tbody>
         </table>
 
@@ -112,13 +122,10 @@
             <input type="text" id="poolName" placeholder="ชื่อวงแชร์">
           </div>
           <div class="form-group">
-            <label for="poolHands">จำนวนมือ</label>
-            <input type="number" id="poolHands" min="1" placeholder="จำนวนมือ">
+            <label for="poolHouseCount">จำนวนบ้าน/กลุ่ม</label>
+            <input type="number" id="poolHouseCount" min="1" placeholder="จำนวนบ้าน/กลุ่ม">
           </div>
-          <div class="form-group">
-            <label for="poolAmount">เงินต่อมือ (บาท)</label>
-            <input type="number" id="poolAmount" min="0" step="100" placeholder="เงินต่อมือ">
-          </div>
+          <div id="houseGroups"></div>
           <div class="form-group">
             <label for="poolStartDate">วันที่เริ่ม</label>
             <input type="date" id="poolStartDate">
@@ -171,7 +178,13 @@
     <div id="calendar-tab" class="tab-content" style="display:none">
       <div class="panel">
         <h2>ปฎิทินส่งเงิน</h2>
-        <div style="display:flex; justify-content:space-between; margin-bottom:16px">
+        <div style="margin-bottom:12px">
+      <label>กรองวงแชร์:</label>
+      <select id="calendarPoolFilter">
+        <option value="all">วงแชร์ทั้งหมด</option>
+      </select>
+    </div>
+    <div style="display:flex; justify-content:space-between; margin-bottom:16px">
           <button id="prevMonth" class="btn-outline">← เดือนก่อน</button>
           <h3 id="currentMonth">มกราคม 2567</h3>
           <button id="nextMonth" class="btn-outline">เดือนถัดไป →</button>
@@ -186,22 +199,28 @@
     <div id="reports-tab" class="tab-content" style="display:none">
       <div class="panel">
         <h2>รายงานสรุป</h2>
+        <div style="margin-bottom:12px">
+          <label>กรองวงแชร์:</label>
+          <select id="reportPoolFilter">
+            <option value="all">วงแชร์ทั้งหมด</option>
+          </select>
+        </div>
         <div class="report-grid">
           <div class="report-card">
             <h3>วงแชร์ที่กำลังดำเนินการ</h3>
-            <div id="activePoolsReport"></div>
+            <div class="report-box"><div id="activePoolsReport"></div></div>
           </div>
           <div class="report-card">
             <h3>วงแชร์ที่ปิดแล้ว</h3>
-            <div id="completedPoolsReport"></div>
+            <div class="report-box"><div id="completedPoolsReport"></div></div>
           </div>
           <div class="report-card">
             <h3>กำไร/ขาดทุน</h3>
-            <div id="profitLossReport"></div>
+            <div class="report-box"><div id="profitLossReport"></div></div>
           </div>
           <div class="report-card">
             <h3>การส่งเงินใน 7 วันข้างหน้า</h3>
-            <div id="upcomingPaymentsReport"></div>
+            <div class="report-box"><div id="upcomingPaymentsReport"></div></div>
           </div>
         </div>
       </div>
@@ -215,6 +234,17 @@
 
   <script>
     // ====== Utilities ======
+    function ensureDefaultDates(){
+      const start = $('#poolStartDate');
+      const end = $('#poolEndDate');
+      const today = new Date().toISOString().split('T')[0];
+      if (start && !start.value) start.value = today;
+      if (end && !end.value) {
+        const d = new Date();
+        d.setMonth(d.getMonth() + 6);
+        end.value = d.toISOString().split('T')[0];
+      }
+    }
     const THB = new Intl.NumberFormat('th-TH', { style:'currency', currency:'THB', minimumFractionDigits:2 });
     const $ = (sel) => document.querySelector(sel);
     const $$ = (sel) => Array.from(document.querySelectorAll(sel));
@@ -226,7 +256,9 @@
       rows: [],
       pools: [],
       sort: { key:'period', dir:'asc' },
-      filters: { house:'', pool:'', q:'' },
+      filters: { house:'', pool:'', q:'', date:'' },
+      reportFilter: { pool:'all' },
+      calendarFilter: { pool: 'all' },
       currentView: {
         calendar: {
           month: new Date().getMonth(),
@@ -283,6 +315,10 @@
           (r.pool||'').toLowerCase().includes(q) || 
           (r.note||'').toLowerCase().includes(q)
         );
+      }
+
+      if(state.filters.date){
+        rows = rows.filter(r => (r.date || '').split('T')[0] === state.filters.date);
       }
 
       // sort
@@ -366,6 +402,11 @@
       const poolSelect = $('#pool');
       poolSelect.innerHTML = '<option value="">เลือกวงแชร์</option>' + state.pools.map(p=>`<option value="${escapeHtml(p.name)}">${escapeHtml(p.name)}</option>`).join('');
 
+      // อัพเดท list บ้านสำหรับ input เพิ่มรายการ
+      updateHouseOptions($('#pool').value, "house");
+      // อัพเดท list บ้านสำหรับ filter
+      updateHouseOptions(state.filters.pool, "filterHouse");
+
       // update header sort indicators
       $$('#dataTable thead th.sortable').forEach(th=>{
         th.classList.remove('asc','desc');
@@ -436,33 +477,52 @@
 
         const poolCard = document.createElement('div');
         poolCard.className = 'pool-card';
+
+        const totalHands = pool.houses ? pool.houses.reduce((sum,h)=> sum + h.hands, 0) : 0;
+
+        // มือแต่ละบ้าน/กลุ่ม
+        const housesHtml = pool.houses && pool.houses.length ? 
+          '<ul>' + pool.houses.map(h => 
+            `<li>- ${escapeHtml(h.name)} ${h.hands} มือ × ${THB.format(h.amount)}</li>`
+          ).join('') + '</ul>' 
+          : '<div>ไม่มีข้อมูลบ้าน/กลุ่ม</div>';
+
+        // ส่งแล้ว
+        let totalPaidHands = 0;
+        const perHouseProgress = pool.houses && pool.houses.length ? pool.houses.map(h => {
+          const txs = poolTransactions.filter(t => t.house === h.name && t.pay > 0);
+          const paid = Math.floor(txs.reduce((s,t)=>s+Number(t.pay||0),0) / h.amount);
+          totalPaidHands += paid;
+          return `<li>- ${escapeHtml(h.name)} ส่งแล้ว ${paid}/${h.hands} มือ</li>`;
+        }).join('') : '';
+
+        const progressPercent = totalHands>0 ? Math.min(Math.round((totalPaidHands/totalHands)*100),100) : 0;
+
         poolCard.innerHTML = `
           <div class="pool-card-header">
             <h3>${escapeHtml(pool.name)}</h3>
             <span class="pool-status ${statusClass}">${statusText}</span>
           </div>
-          
-          <div class="progress-bar">
-            <div class="progress-fill" style="width: ${completionPercent}%"></div>
-            <div class="progress-text">${completionPercent}%</div>
+
+          <div class="pool-progress">
+            <div class="progress-bar ${statusClass}" style="width:${progressPercent}%">
+              <span class="progress-label">${progressPercent}%</span>
+            </div>
           </div>
-          
+
           <div class="pool-details">
-            <div class="detail-row"><span class="label">จำนวนมือ:</span><span class="value">${pool.hands} มือ</span></div>
-            <div class="detail-row"><span class="label">มือละ:</span><span class="value">${THB.format(pool.amount)}</span></div>
-            <div class="detail-row"><span class="label">ส่งแล้ว:</span><span class="value">${handsPaid} / ${pool.hands} มือ</span></div>
-            <div class="detail-row"><span class="label">เหลืออีก:</span><span class="value">${remainingHands} มือ</span></div>
+            <div class="detail-row"><span class="label">จำนวนมือทั้งหมด:</span><span class="value">${totalHands} มือ</span></div>
+            <div class="detail-row"><span class="label">มือแต่ละบ้าน/กลุ่ม:</span><span class="value">${housesHtml}</span></div>
+            <div class="detail-row"><span class="label">ส่งแล้ว:</span><span class="value">${totalPaidHands}/${totalHands} มือ</span></div>
+            <div class="detail-row"><span class="label"></span><span class="value"><ul>${perHouseProgress}</ul></span></div>
             <div class="detail-row"><span class="label">เริ่ม:</span><span class="value">${formatDate(pool.startDate)}</span></div>
             <div class="detail-row"><span class="label">สิ้นสุด:</span><span class="value">${formatDate(pool.endDate)}</span></div>
             <div class="detail-row"><span class="label">รอบส่ง:</span><span class="value">${roundInfo}</span></div>
+            <div class="detail-row"><span class="label">รับแล้ว:</span><span class="value in">${THB.format(totalReceive)}</span></div>
+            <div class="detail-row"><span class="label">จ่ายแล้ว:</span><span class="value out">${THB.format(totalPay)}</span></div>
+            <div class="detail-row total"><span class="label">กำไร/ขาดทุน:</span><span class="value ${netProfit >= 0 ? 'in' : 'out'}">${THB.format(netProfit)}</span></div>
           </div>
-          
-          <div class="pool-financial">
-            <div class="financial-row"><span>รับแล้ว:</span><span class="amount in">${THB.format(totalReceive)}</span></div>
-            <div class="financial-row"><span>จ่ายแล้ว:</span><span class="amount out">${THB.format(totalPay)}</span></div>
-            <div class="financial-row total"><span>กำไร/ขาดทุน:</span><span class="amount ${netProfit >= 0 ? 'in' : 'out'}">${THB.format(netProfit)}</span></div>
-          </div>
-          
+
           <div class="pool-actions">
             <button class="btn-outline" data-pool-id="${pool.id}" data-act="edit-pool">แก้ไข</button>
             <button class="btn-danger" data-pool-id="${pool.id}" data-act="delete-pool">ลบ</button>
@@ -485,14 +545,20 @@
     }
 
     // ฟังก์ชันคำนวณจำนวนมือที่ส่งแล้ว
+    
+    // ฟังก์ชันคำนวณจำนวนมือที่ส่งแล้ว (ปรับให้รองรับ houses)
     function calculateHandsPaid(pool, transactions) {
-      // นับจำนวนมือที่ส่งแล้วจากรายการจ่ายเงิน
-      const payTransactions = transactions.filter(t => t.pay > 0);
-      const totalPaid = payTransactions.reduce((sum, t) => sum + Number(t.pay || 0), 0);
-      
-      // คำนวณจำนวนมือที่ส่งแล้ว (เงินที่จ่าย / เงินต่อมือ)
-      return Math.floor(totalPaid / pool.amount);
+      let totalPaidHands = 0;
+      if (pool.houses && pool.houses.length) {
+        pool.houses.forEach(h => {
+          const txs = transactions.filter(t => t.house === h.name && t.pay > 0);
+          const paid = Math.floor(txs.reduce((s,t)=>s+Number(t.pay||0),0) / h.amount);
+          totalPaidHands += paid;
+        });
+      }
+      return totalPaidHands;
     }
+
 
     // ฟังก์ชันดูรายการธุรกรรมของวงแชร์
     function viewPoolTransactions(poolId) {
@@ -506,21 +572,30 @@
       render();
     }
 
+    
     function renderCalendar(){
       const calendarContainer = $('#calendarContainer');
       const { month, year } = state.currentView.calendar;
+
+      // เติม options ของ filter
+      const sel = $('#calendarPoolFilter');
+      if (sel) {
+        const current = state.calendarFilter.pool;
+        const uniquePools = [...new Set(state.pools.map(p => p.name))];
+        sel.innerHTML = '<option value="all">วงแชร์ทั้งหมด</option>' +
+          uniquePools.map(name => 
+            `<option value="${escapeHtml(name)}" ${current===name?'selected':''}>${escapeHtml(name)}</option>`
+          ).join('');
+      }
       
-      // Set current month text
       const monthNames = [
         'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
         'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
       ];
       $('#currentMonth').textContent = `${monthNames[month]} ${year + 543}`;
       
-      // Clear calendar
       calendarContainer.innerHTML = '';
       
-      // Add day headers
       const dayNames = ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'];
       dayNames.forEach(day => {
         const dayHeader = document.createElement('div');
@@ -529,63 +604,63 @@
         calendarContainer.appendChild(dayHeader);
       });
       
-      // Get first day of month and number of days
       const firstDay = new Date(year, month, 1).getDay();
       const daysInMonth = new Date(year, month + 1, 0).getDate();
       const today = new Date();
       
-      // Add empty days for first week
       for (let i = 0; i < firstDay; i++) {
         const emptyDay = document.createElement('div');
         emptyDay.className = 'calendar-day';
         calendarContainer.appendChild(emptyDay);
       }
       
-      // Add days of the month
       for (let day = 1; day <= daysInMonth; day++) {
         const dayElement = document.createElement('div');
         dayElement.className = 'calendar-day';
         
-        // Check if today
         if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
           dayElement.classList.add('today');
         }
         
-        // Day number
         const dayNumber = document.createElement('div');
         dayNumber.className = 'day-number';
         dayNumber.textContent = day;
         dayElement.appendChild(dayNumber);
         
-        // Check for payment days
-        const paymentPools = state.pools.filter(pool => {
-        if (pool.type === 'daily') {
-          if (!pool.extra || !pool.extra.intervalDays) return false;
-          const start = new Date(pool.startDate);
-          const end = new Date(pool.endDate);
-          const cur = new Date(year, month, day);
-          if (cur < start || cur > end) return false;
-          const diffDays = Math.floor((cur - start) / (1000*60*60*24));
-          return diffDays % pool.extra.intervalDays === 0;
-        } else if (pool.type === 'weekly') {
-          const cur = new Date(year, month, day);
-          return cur.getDay() === (pool.extra?.weekday ?? 0);
-        } else {
-          return pool.payDay == day;
-        }
-      });
+        let paymentPools = state.pools.filter(pool => {
+          if (state.calendarFilter.pool !== 'all' && pool.name !== state.calendarFilter.pool) return false;
+          if (pool.type === 'daily') {
+            if (!pool.extra || !pool.extra.intervalDays) return false;
+            const start = new Date(pool.startDate);
+            const end = new Date(pool.endDate);
+            const cur = new Date(year, month, day);
+            if (cur < start || cur > end) return false;
+            const diffDays = Math.floor((cur - start) / (1000*60*60*24));
+            return diffDays % pool.extra.intervalDays === 0;
+          } else if (pool.type === 'weekly') {
+            const cur = new Date(year, month, day);
+            return cur.getDay() === (pool.extra?.weekday ?? 0);
+          } else {
+            return pool.payDay == day;
+          }
+        });
+        
         if (paymentPools.length > 0) {
           const paymentInfo = document.createElement('div');
           paymentInfo.className = 'payment-info';
           
           paymentPools.forEach(pool => {
-            const poolInfo = document.createElement('div');
-            poolInfo.className = 'pool-badge';
-            poolInfo.innerHTML = `
-              <div class="pool-name">${escapeHtml(pool.name)}</div>
-              <div class="pool-amount">${THB.format(pool.amount)}</div>
-            `;
-            paymentInfo.appendChild(poolInfo);
+            if (pool.houses && pool.houses.length) {
+              pool.houses.forEach(h => {
+                const poolInfo = document.createElement('div');
+                poolInfo.className = 'pool-badge';
+                poolInfo.innerHTML = `
+                  <div class="pool-name">${escapeHtml(pool.name)} (${escapeHtml(h.name)})</div>
+                  <div class="pool-amount">${THB.format(h.amount)}</div>
+                `;
+                paymentInfo.appendChild(poolInfo);
+              });
+            }
           });
           
           dayElement.appendChild(paymentInfo);
@@ -595,9 +670,26 @@
       }
     }
 
+
+    
     function renderReports(){
+
+      const reportPoolSel = $('#reportPoolFilter');
+      if (reportPoolSel) {
+        const current = state.reportFilter.pool;
+
+        // ✅ เอาชื่อวงแชร์ที่ไม่ซ้ำ
+        const uniquePools = [...new Set(state.pools.map(p => p.name))];
+
+        reportPoolSel.innerHTML = '<option value="all">วงแชร์ทั้งหมด</option>' +
+          uniquePools.map(name => 
+            `<option value="${escapeHtml(name)}" ${current===name?'selected':''}>${escapeHtml(name)}</option>`
+          ).join('');
+      }
+
       // รายงานวงแชร์ที่กำลังดำเนินการ
       const activePools = state.pools.filter(pool => {
+        if (state.reportFilter.pool !== 'all' && pool.name !== state.reportFilter.pool) return false;
         const endDate = new Date(pool.endDate);
         return new Date() <= endDate;
       });
@@ -605,51 +697,97 @@
       let activePoolsHTML = '<ul>';
       activePools.forEach(pool => {
         const transactions = state.rows.filter(r => r.pool === pool.name);
-        const totalReceive = transactions.reduce((sum, t) => sum + Number(t.receive || 0), 0);
-        const totalPay = transactions.reduce((sum, t) => sum + Number(t.pay || 0), 0);
-        const handsPaid = calculateHandsPaid(pool, transactions);
-        
-        activePoolsHTML += `
-          <li>
-            <strong>${escapeHtml(pool.name)}</strong>: 
-            ส่งแล้ว ${handsPaid}/${pool.hands} มือ,
-            รับ ${THB.format(totalReceive)} - จ่าย ${THB.format(totalPay)} = 
-            <span style="color: ${totalReceive - totalPay >= 0 ? 'green' : 'red'}">
-              ${THB.format(totalReceive - totalPay)}
-            </span>
-          </li>
-        `;
+
+        if (pool.houses && pool.houses.length) {
+          pool.houses.forEach(h => {
+            const txs = transactions.filter(t => t.house === h.name);
+            const totalReceive = txs.reduce((sum, t) => sum + Number(t.receive || 0), 0);
+            const totalPay = txs.reduce((sum, t) => sum + Number(t.pay || 0), 0);
+            const handsPaid = calculateHandsPaid({houses:[h]}, txs);
+            const totalHands = h.hands;
+
+            activePoolsHTML += `
+              <li>
+                <strong>${escapeHtml(pool.name)} (${escapeHtml(h.name)})</strong>: 
+                ส่งแล้ว ${handsPaid}/${totalHands} มือ,
+                รับ ${THB.format(totalReceive)} - จ่าย ${THB.format(totalPay)} = 
+                <span style="color: ${totalReceive - totalPay >= 0 ? 'green' : 'red'}">
+                  ${THB.format(totalReceive - totalPay)}
+                </span>
+              </li>
+            `;
+          });
+        } else {
+          const totalReceive = transactions.reduce((sum, t) => sum + Number(t.receive || 0), 0);
+          const totalPay = transactions.reduce((sum, t) => sum + Number(t.pay || 0), 0);
+          const totalHands = pool.houses ? pool.houses.reduce((s,h)=>s+h.hands,0) : 0;
+          const handsPaid = calculateHandsPaid(pool, transactions);
+
+          activePoolsHTML += `
+            <li>
+              <strong>${escapeHtml(pool.name)}</strong>: 
+              ส่งแล้ว ${handsPaid}/${totalHands} มือ,
+              รับ ${THB.format(totalReceive)} - จ่าย ${THB.format(totalPay)} = 
+              <span style="color: ${totalReceive - totalPay >= 0 ? 'green' : 'red'}">
+                ${THB.format(totalReceive - totalPay)}
+              </span>
+            </li>
+          `;
+        }
       });
       activePoolsHTML += '</ul>';
       $('#activePoolsReport').innerHTML = activePoolsHTML;
       
       // รายงานวงแชร์ที่ปิดแล้ว
       const completedPools = state.pools.filter(pool => {
+        if (state.reportFilter.pool !== 'all' && pool.name !== state.reportFilter.pool) return false;
         const endDate = new Date(pool.endDate);
         const transactions = state.rows.filter(r => r.pool === pool.name);
         const handsPaid = calculateHandsPaid(pool, transactions);
-
-        // ถือว่าปิดแล้ว ถ้ามือครบ หรือ วันนี้เลย endDate
-        return handsPaid >= pool.hands || new Date() > endDate;
+        const totalHands = pool.houses ? pool.houses.reduce((s,h)=>s+h.hands,0) : 0;
+        return handsPaid >= totalHands || new Date() > endDate;
       });
       
       let completedPoolsHTML = '<ul>';
       completedPools.forEach(pool => {
         const transactions = state.rows.filter(r => r.pool === pool.name);
-        const totalReceive = transactions.reduce((sum, t) => sum + Number(t.receive || 0), 0);
-        const totalPay = transactions.reduce((sum, t) => sum + Number(t.pay || 0), 0);
-        const handsPaid = calculateHandsPaid(pool, transactions);
-        
-        completedPoolsHTML += `
-          <li>
-            <strong>${escapeHtml(pool.name)}</strong>: 
-            ส่งแล้ว ${handsPaid}/${pool.hands} มือ,
-            รับ ${THB.format(totalReceive)} - จ่าย ${THB.format(totalPay)} = 
-            <span style="color: ${totalReceive - totalPay >= 0 ? 'green' : 'red'}">
-              ${THB.format(totalReceive - totalPay)}
-            </span>
-          </li>
-        `;
+
+        if (pool.houses && pool.houses.length) {
+          pool.houses.forEach(h => {
+            const txs = transactions.filter(t => t.house === h.name);
+            const totalReceive = txs.reduce((sum, t) => sum + Number(t.receive || 0), 0);
+            const totalPay = txs.reduce((sum, t) => sum + Number(t.pay || 0), 0);
+            const handsPaid = calculateHandsPaid({houses:[h]}, txs);
+            const totalHands = h.hands;
+
+            completedPoolsHTML += `
+              <li>
+                <strong>${escapeHtml(pool.name)} (${escapeHtml(h.name)})</strong>: 
+                ส่งแล้ว ${handsPaid}/${totalHands} มือ,
+                รับ ${THB.format(totalReceive)} - จ่าย ${THB.format(totalPay)} = 
+                <span style="color: ${totalReceive - totalPay >= 0 ? 'green' : 'red'}">
+                  ${THB.format(totalReceive - totalPay)}
+                </span>
+              </li>
+            `;
+          });
+        } else {
+          const totalReceive = transactions.reduce((sum, t) => sum + Number(t.receive || 0), 0);
+          const totalPay = transactions.reduce((sum, t) => sum + Number(t.pay || 0), 0);
+          const totalHands = pool.houses ? pool.houses.reduce((s,h)=>s+h.hands,0) : 0;
+          const handsPaid = calculateHandsPaid(pool, transactions);
+
+          completedPoolsHTML += `
+            <li>
+              <strong>${escapeHtml(pool.name)}</strong>: 
+              ส่งแล้ว ${handsPaid}/${totalHands} มือ,
+              รับ ${THB.format(totalReceive)} - จ่าย ${THB.format(totalPay)} = 
+              <span style="color: ${totalReceive - totalPay >= 0 ? 'green' : 'red'}">
+                ${THB.format(totalReceive - totalPay)}
+              </span>
+            </li>
+          `;
+        }
       });
       completedPoolsHTML += '</ul>';
       $('#completedPoolsReport').innerHTML = completedPoolsHTML;
@@ -670,14 +808,14 @@
         </div>
       `;
       
-      // รายงานการส่งเงิน próximos 7 วัน
+      // รายงานการส่งเงิน 7 วันข้างหน้า
       const nextWeek = new Date();
       nextWeek.setDate(nextWeek.getDate() + 7);
       
       const upcomingPayments = [];
-
       const today = new Date();
       state.pools.forEach(pool => {
+        if (state.reportFilter.pool !== 'all' && pool.name !== state.reportFilter.pool) return;
         const start = new Date(pool.startDate);
         const end = new Date(pool.endDate);
         let checkDate = new Date(today);
@@ -694,43 +832,55 @@
             if (checkDate.getDate() === pool.payDay) match = true;
           }
 
-          if (match) {
-            const transactions = state.rows.filter(r => r.pool === pool.name);
-            const handsPaid = calculateHandsPaid(pool, transactions);
-            const nextHand = handsPaid + 1;
-            upcomingPayments.push({
-              pool: pool.name,
-              date: checkDate.toISOString().split('T')[0],
-              amount: pool.amount,
-              nextHand: nextHand <= pool.hands ? nextHand : 'ครบแล้ว',
-              totalHands: pool.hands
+          if (match && pool.houses && pool.houses.length) {
+            pool.houses.forEach(h => {
+              const transactions = state.rows.filter(r => r.pool === pool.name && r.house === h.name);
+              const paid = Math.floor(transactions.reduce((s,t)=>s+Number(t.pay||0),0) / h.amount);
+              const nextHand = paid + 1;
+              upcomingPayments.push({
+                pool: pool.name,
+                house: h.name,
+                date: checkDate.toISOString().split('T')[0],
+                amount: h.amount,
+                nextHand: nextHand <= h.hands ? nextHand : 'ครบแล้ว',
+                totalHands: h.hands
+              });
             });
           }
           checkDate.setDate(checkDate.getDate()+1);
         }
       });
 
-      let upcomingHTML = '<ul>';
+      
+      let upcomingHTML = '';
+      const groupedByPool = {};
       upcomingPayments.forEach(payment => {
         if (payment.nextHand !== 'ครบแล้ว') {
-          upcomingHTML += `
-            <li>
-              <strong>${escapeHtml(payment.pool)}</strong>: 
-              วันที่ ${formatDate(payment.date)}, 
-              ส่งมือที่ ${payment.nextHand}/${payment.totalHands} 
-              (${THB.format(payment.amount)})
-            </li>
-          `;
+          if (!groupedByPool[payment.pool]) groupedByPool[payment.pool] = [];
+          groupedByPool[payment.pool].push(payment);
         }
       });
-      
-      if (upcomingPayments.filter(p => p.nextHand !== 'ครบแล้ว').length === 0) {
-        upcomingHTML += '<li>ไม่มีกำหนดส่งเงินใน 7 วันข้างหน้า</li>';
+
+      Object.keys(groupedByPool).forEach(poolName => {
+        upcomingHTML += `<div><strong>${poolName}:</strong></div>`;
+        groupedByPool[poolName].forEach(p => {
+          upcomingHTML += `
+            <div style="margin-left:20px">
+              วันที่ ${formatDate(p.date)}, 
+              ${escapeHtml(p.house)} มือที่ ${p.nextHand}/${p.totalHands} 
+              (${THB.format(p.amount)})
+            </div>
+          `;
+        });
+      });
+
+      if (upcomingHTML === '') {
+        upcomingHTML = '<div>ไม่มีกำหนดส่งเงินใน 7 วันข้างหน้า</div>';
       }
-      
-      upcomingHTML += '</ul>';
       $('#upcomingPaymentsReport').innerHTML = upcomingHTML;
+
     }
+
 
     function fmtNum(v){ const n = Number(v||0); return THB.format(n); }
     function badgeIn(html){ return `<span class="pill in">${html}</span>` }
@@ -750,146 +900,218 @@
       });
     }
 
+    
+    function updateHouseOptions(poolName, targetSelectId="house") {
+      const houseSelectInput = document.getElementById(targetSelectId);
+      let houseOptions = [];
+
+      if (poolName) {
+        // ✅ กรองบ้านเฉพาะในวงแชร์ที่เลือก
+        const pool = state.pools.find(p => p.name === poolName);
+        if (pool && pool.houses) {
+          houseOptions = pool.houses.map(h => h.name);
+        }
+      } else {
+        // ถ้าไม่ได้เลือกวงแชร์ → แสดงบ้านทั้งหมด
+        state.pools.forEach(p => {
+          if (p.houses) {
+            p.houses.forEach(h => { if(h.name) houseOptions.push(h.name); });
+          }
+        });
+        state.rows.forEach(r => { if(r.house) houseOptions.push(r.house); });
+      }
+
+      houseOptions = [...new Set(houseOptions)].sort((a,b)=>a.localeCompare(b));
+      houseSelectInput.innerHTML = '<option value="">เลือกบ้าน/กลุ่ม</option>' +
+        houseOptions.map(h=>`<option value="${escapeHtml(h)}">${escapeHtml(h)}</option>`).join('');
+    }
+    
     // ====== Actions ======
     function addRow(){
-      const period = Number($('#period').value || 0);
-      const date = $('#date').value;
-      const house = $('#house').value.trim();
-      const pool = $('#pool').value.trim();
-      const receive = Number($('#receive').value || 0);
-      const pay = Number($('#pay').value || 0);
-      const note = $('#note').value.trim();
+  const date = $('#date').value;
+  const house = $('#house').value.trim();
+  const pool = $('#pool').value.trim();
+  const receive = Number($('#receive').value || 0);
+  const pay = Number($('#pay').value || 0);
+  const note = $('#note').value.trim();
 
-      if(!period){ return alert('กรุณาใส่ "งวดที่" เป็นตัวเลขมากกว่า 0'); }
-      if(!house){ return alert('กรุณาใส่ชื่อบ้าน/กลุ่ม'); }
-      if(!pool){ return alert('กรุณาเลือกวงแชร์'); }
+  if(!house){ return alert('กรุณาใส่ชื่อบ้าน/กลุ่ม'); }
+  if(!pool){ return alert('กรุณาเลือกวงแชร์'); }
 
-      state.rows.push({ id: uid(), period, date, house, pool, receive, pay, note, net: receive - pay });
+  // ✅ คำนวณงวดที่อัตโนมัติ
+  const existing = state.rows.filter(r => r.pool === pool);
+  const nextPeriod = existing.length > 0 ? Math.max(...existing.map(r => r.period||0)) + 1 : 1;
 
-      // clear inputs (ยกเว้นบ้านและวงแชร์ เพื่อสะดวก)
-      $('#period').value='';
-      $('#receive').value='';
-      $('#pay').value='';
-      $('#note').value='';
+  state.rows.push({ 
+    id: uid(), 
+    period: nextPeriod, 
+    date, 
+    house, 
+    pool, 
+    receive, 
+    pay, 
+    note, 
+    net: receive - pay 
+  });
 
-      render();
-    }
+  // clear inputs (ยกเว้นบ้าน/วงแชร์ เพื่อสะดวก)
+  $('#receive').value='';
+  $('#pay').value='';
+  $('#note').value='';
+
+  render();
+}
 
     function addPool(){
+      ensureDefaultDates();
       const name = $('#poolName').value.trim();
-      const hands = parseInt($('#poolHands').value);
-      const amount = parseFloat($('#poolAmount').value);
       const startDate = $('#poolStartDate').value;
       const endDate = $('#poolEndDate').value;
       const payDay = parseInt($('#poolPayDay').value);
       const note = $('#poolNote').value.trim();
+      const type = $('#poolType').value;
+
+      // อ่าน houses จากกล่อง input
+      const houseGroups = $$('#houseGroups .house-group');
+      const houses = houseGroups.map(group => {
+        const hName = group.querySelector('.house-name').value.trim();
+        const hHands = parseInt(group.querySelector('.house-hands').value);
+        const hAmount = parseFloat(group.querySelector('.house-amount').value);
+        return { name: hName, hands: hHands, amount: hAmount };
+      }).filter(h => h.name && h.hands && h.amount);
 
       if(!name) return alert('กรุณาใส่ชื่อวงแชร์');
-      if(!hands || hands < 1) return alert('กรุณาใส่จำนวนมือที่ถูกต้อง');
-      if(!amount || amount < 0) return alert('กรุณาใส่จำนวนเงินต่อมือที่ถูกต้อง');
+      if(houses.length === 0) return alert('กรุณากรอกข้อมูลบ้าน/กลุ่มอย่างน้อย 1 รายการ');
       if(!startDate) return alert('กรุณาเลือกวันที่เริ่ม');
       if(!endDate) return alert('กรุณาเลือกวันที่สิ้นสุด');
-      if(!payDay || payDay < 1 || payDay > 31) return alert('กรุณาใส่วันที่ส่งเงินที่ถูกต้อง (1-31)');
+      if(type === 'monthly' && (!payDay || payDay < 1 || payDay > 31)) {
+        return alert('กรุณาใส่วันที่ส่งเงินที่ถูกต้อง (1-31)');
+      }
 
       state.pools.push({
-        type: $('#poolType').value,
-        extra: ($('#poolType').value==='daily') ? {intervalDays: parseInt($('#poolIntervalDays')?.value||1)} :
-               ($('#poolType').value==='weekly') ? {weekday: parseInt($('#poolWeekday')?.value||0)} :
+        type,
+        extra: (type==='daily') ? {intervalDays: parseInt($('#poolIntervalDays')?.value||1)} :
+               (type==='weekly') ? {weekday: parseInt($('#poolWeekday')?.value||0)} :
                {dayOfMonth: parseInt($('#poolPayDay').value)},
         id: uid(),
         name,
-        hands,
-        amount,
+        houses,
         startDate,
         endDate,
-        payDay,
+        payDay: (type==='monthly' ? payDay : null),
         note
       });
 
       // Clear form
       $('#poolName').value = '';
-      $('#poolHands').value = '';
-      $('#poolAmount').value = '';
+      $('#poolHouseCount').value = '';
+      $('#houseGroups').innerHTML = '';
       $('#poolStartDate').value = '';
       $('#poolEndDate').value = '';
       $('#poolPayDay').value = '';
       $('#poolNote').value = '';
+      ensureDefaultDates();
 
       render();
     }
 
-    function editPool(poolId){
-      const pool = state.pools.find(p => p.id === poolId);
-      if (!pool) return;
-      
-      // Fill form with pool data
-      $('#poolName').value = pool.name;
-      $('#poolHands').value = pool.hands;
-      $('#poolAmount').value = pool.amount;
-      $('#poolStartDate').value = pool.startDate;
-      $('#poolEndDate').value = pool.endDate;
-      $('#poolPayDay').value = pool.payDay;
-      $('#poolNote').value = pool.note || '';
-      
-      // Change button to update
-      const addButton = $('#addPool');
-      addButton.textContent = 'อัปเดตวงแชร์';
-      addButton.dataset.editId = poolId;
-      
-      // Switch to pools tab
-      switchTab('pools');
-    }
+    function editPool(poolId) {
+  const pool = state.pools.find(p => p.id === poolId);
+  if (!pool) return;
 
-    function updatePool(poolId){
-      const name = $('#poolName').value.trim();
-      const hands = parseInt($('#poolHands').value);
-      const amount = parseFloat($('#poolAmount').value);
-      const startDate = $('#poolStartDate').value;
-      const endDate = $('#poolEndDate').value;
-      const payDay = parseInt($('#poolPayDay').value);
-      const note = $('#poolNote').value.trim();
+  // ใส่ค่าเดิมกลับเข้า form
+  $('#poolName').value = pool.name;
+  $('#poolStartDate').value = pool.startDate;
+  $('#poolEndDate').value = pool.endDate;
+  $('#poolPayDay').value = pool.payDay || '';
+  $('#poolNote').value = pool.note || '';
+  $('#poolType').value = pool.type || 'monthly';
 
-      if(!name) return alert('กรุณาใส่ชื่อวงแชร์');
-      if(!hands || hands < 1) return alert('กรุณาใส่จำนวนมือที่ถูกต้อง');
-      if(!amount || amount < 0) return alert('กรุณาใส่จำนวนเงินต่อมือที่ถูกต้อง');
-      if(!startDate) return alert('กรุณาเลือกวันที่เริ่ม');
-      if(!endDate) return alert('กรุณาเลือกวันที่สิ้นสุด');
-      if(!payDay || payDay < 1 || payDay > 31) return alert('กรุณาใส่วันที่ส่งเงินที่ถูกต้อง (1-31)');
-
-      const index = state.pools.findIndex(p => p.id === poolId);
-      if (index !== -1) {
-        state.pools[index] = {
-        ...state.pools[index],
-        type: $('#poolType').value,
-        extra: ($('#poolType').value==='daily') ? {intervalDays: parseInt($('#poolIntervalDays')?.value||1)} :
-               ($('#poolType').value==='weekly') ? {weekday: parseInt($('#poolWeekday')?.value||0)} :
-               {dayOfMonth: parseInt($('#poolPayDay').value)},
-          ...state.pools[index],
-          name,
-          hands,
-          amount,
-          startDate,
-          endDate,
-          payDay,
-          note
-        };
+  // houses
+  $('#poolHouseCount').value = pool.houses ? pool.houses.length : 0;
+  $('#poolHouseCount').dispatchEvent(new Event('change'));
+  if (pool.houses) {
+    pool.houses.forEach((h, i) => {
+      const group = document.querySelectorAll('#houseGroups .house-group')[i];
+      if (group) {
+        group.querySelector('.house-name').value = h.name;
+        group.querySelector('.house-hands').value = h.hands;
+        group.querySelector('.house-amount').value = h.amount;
       }
+    });
+  }
 
-      // Reset form and button
-      $('#poolName').value = '';
-      $('#poolHands').value = '';
-      $('#poolAmount').value = '';
-      $('#poolStartDate').value = '';
-      $('#poolEndDate').value = '';
-      $('#poolPayDay').value = '';
-      $('#poolNote').value = '';
-      
-      const addButton = $('#addPool');
-      addButton.textContent = 'เพิ่มวงแชร์';
-      delete addButton.dataset.editId;
-      
-      render();
-    }
+  // เปลี่ยนปุ่มเป็น "อัปเดต"
+  const addButton = $('#addPool');
+  addButton.textContent = 'อัปเดตวงแชร์';
+  addButton.dataset.editId = poolId;
+
+  switchTab('pools');
+
+  // ✅ เลื่อนขึ้นไปที่ฟอร์มแก้ไข
+  document.querySelector('.pool-form').scrollIntoView({ behavior: 'smooth' });
+}
+
+function updatePool(poolId) {
+  ensureDefaultDates();
+  const name = $('#poolName').value.trim();
+  const startDate = $('#poolStartDate').value;
+  const endDate = $('#poolEndDate').value;
+  const payDay = parseInt($('#poolPayDay').value);
+  const note = $('#poolNote').value.trim();
+  const type = $('#poolType').value;
+
+  // houses
+  const houseGroups = $$('#houseGroups .house-group');
+  const houses = houseGroups.map(group => {
+    return {
+      name: group.querySelector('.house-name').value.trim(),
+      hands: parseInt(group.querySelector('.house-hands').value),
+      amount: parseFloat(group.querySelector('.house-amount').value)
+    };
+  }).filter(h => h.name && h.hands && h.amount);
+
+  if (!name) return alert('กรุณาใส่ชื่อวงแชร์');
+  if (houses.length === 0) return alert('กรุณากรอกข้อมูลบ้าน/กลุ่มอย่างน้อย 1 รายการ');
+  if (!startDate) return alert('กรุณาเลือกวันที่เริ่ม');
+  if (!endDate) return alert('กรุณาเลือกวันที่สิ้นสุด');
+  if (type === 'monthly' && (!payDay || payDay < 1 || payDay > 31)) {
+    return alert('กรุณาใส่วันที่ส่งเงินที่ถูกต้อง (1-31)');
+  }
+
+  const index = state.pools.findIndex(p => p.id === poolId);
+  if (index !== -1) {
+    state.pools[index] = {
+      ...state.pools[index],
+      id: poolId,
+      name,
+      houses,
+      startDate,
+      endDate,
+      payDay: type === 'monthly' ? payDay : null,
+      note,
+      type,
+      extra: (type==='daily') ? {intervalDays: parseInt($('#poolIntervalDays')?.value||1)} :
+             (type==='weekly') ? {weekday: parseInt($('#poolWeekday')?.value||0)} : {}
+    };
+  }
+
+  // reset form
+  $('#poolName').value = '';
+  $('#poolHouseCount').value = '';
+  $('#houseGroups').innerHTML = '';
+  $('#poolStartDate').value = '';
+  $('#poolEndDate').value = '';
+  $('#poolPayDay').value = '';
+  $('#poolNote').value = '';
+  ensureDefaultDates();
+
+  const addButton = $('#addPool');
+  addButton.textContent = 'เพิ่มวงแชร์';
+  delete addButton.dataset.editId;
+
+  render();
+}
 
     function deletePool(poolId){
       if(!confirm('ยืนยันการลบวงแชร์นี้? การลบจะไม่ส่งผลต่อรายการธุรกรรมที่เกี่ยวข้อง')) return;
@@ -898,19 +1120,19 @@
       render();
     }
 
+    
     function startEdit(id){
       const idx = state.rows.findIndex(r=>r.id===id);
       if(idx===-1) return;
       const r = state.rows[idx];
 
-      // เปลี่ยนเป็นโหมดแก้ไขในแถว
       const tr = [...$('#tableBody').children].find(x=>x.dataset.id===id);
       if(!tr) return;
       tr.innerHTML = `
         <td><input class="w-sm" type="number" min="1" value="${r.period}"></td>
         <td><input class="w-lg" type="date" value="${r.date || ''}"></td>
-        <td><input class="w-md" type="text" value="${escapeHtml(r.house)}"></td>
         <td><input class="w-md" type="text" value="${escapeHtml(r.pool||'')}" list="poolListEdit"></td>
+        <td><input class="w-md" type="text" value="${escapeHtml(r.house)}"></td>
         <td class="right"><input class="w-md" type="number" step="0.01" min="0" value="${r.receive}"></td>
         <td class="right"><input class="w-md" type="number" step="0.01" min="0" value="${r.pay}"></td>
         <td class="right"><span class="pill">จะแสดงหลังบันทึก</span></td>
@@ -919,37 +1141,37 @@
           <button class="btn-success" data-act="save">บันทึก</button>
           <button class="btn-outline" data-act="cancel">ยกเลิก</button>
         </td>`;
-      
-      // Add datalist for edit mode
+
+      // datalist
       const pools = Array.from(new Set(state.rows.map(r=>r.pool).filter(Boolean))).sort((a,b)=>a.localeCompare(b));
       tr.innerHTML += `<datalist id="poolListEdit">${pools.map(p=>`<option value="${escapeHtml(p)}">`).join('')}</datalist>`;
 
-      tr.addEventListener('click', (e)=>{
-        const act = e.target?.dataset?.act;
-        if(act==='save'){
-          const [p, d, h, pool, rec, pay, _net, note] = tr.querySelectorAll('input');
-          const period = Number(p.value||0);
-          const date = d.value;
-          const house = h.value.trim();
-          const poolName = pool.value.trim();
-          if(!period) return alert('งวดที่ต้องเป็นตัวเลขมากกว่า 0');
-          if(!house) return alert('กรุณาใส่บ้าน/กลุ่ม');
-          if(!poolName) return alert('กรุณาใส่ชื่อวงแชร์');
+      // ✅ bind event กับปุ่ม ไม่ใช้ {once:true}
+      tr.querySelector('[data-act="save"]').addEventListener('click', ()=>{
+        const inputs = tr.querySelectorAll('input');
+        const [p, d, pool, h, rec, pay, note] = inputs;
+        const period = Number(p.value||0);
+        const date = d.value;
+        const house = h.value.trim();
+        const poolName = pool.value.trim();
+        if(!period) return alert('งวดที่ต้องมากกว่า 0');
+        if(!poolName) return alert('กรุณาใส่วงแชร์');
+        if(!house) return alert('กรุณาใส่บ้าน');
 
-          state.rows[idx] = { ...r,
-            period,
-            date,
-            house,
-            pool: poolName,
-            receive: Number(rec.value||0),
-            pay: Number(pay.value||0),
-            note: note.value.trim()
-          };
-          render();
-        }
-        if(act==='cancel') render();
-      }, { once:true });
+        state.rows[idx] = { ...r,
+          period, date, pool: poolName, house,
+          receive: Number(rec.value||0),
+          pay: Number(pay.value||0),
+          note: note.value.trim()
+        };
+        render();
+      });
+
+      tr.querySelector('[data-act="cancel"]').addEventListener('click', ()=>{
+        render(); // ✅ รีเฟรชกลับทันที
+      });
     }
+
 
     function removeRow(id){
       if(!confirm('ยืนยันการลบรายการนี้?')) return;
@@ -1180,15 +1402,24 @@
                 payDay = new Date(firstPay.date).getDate();
               }
 
+              // ✅ สร้าง houses อัตโนมัติจาก CSV
+              const housesMap = {};
+              poolTx.forEach(r => {
+                if (!r.house) return;
+                if (!housesMap[r.house]) {
+                  housesMap[r.house] = { name: r.house, hands: 0, amount: r.pay || r.receive || 0 };
+                }
+                housesMap[r.house].hands = Math.max(housesMap[r.house].hands, r.period || 0);
+                if (r.pay > 0) housesMap[r.house].amount = r.pay;
+              });
+              const houses = Object.values(housesMap);
+
               state.pools.push({
-        type: $('#poolType').value,
-        extra: ($('#poolType').value==='daily') ? {intervalDays: parseInt($('#poolIntervalDays')?.value||1)} :
-               ($('#poolType').value==='weekly') ? {weekday: parseInt($('#poolWeekday')?.value||0)} :
-               {dayOfMonth: parseInt($('#poolPayDay').value)},
                 id: uid(),
                 name,
+                type: "monthly",
+                houses,
                 hands: hands || 0,
-                amount: amount || 0,
                 startDate,
                 endDate,
                 payDay,
@@ -1208,13 +1439,38 @@
     });
 
 
-    $('#filterHouse').addEventListener('change', (e)=>{ state.filters.house = e.target.value; render(); });
+    
+    // เมื่อเปลี่ยนวงแชร์ตอนเพิ่มรายการ
+    $('#pool').addEventListener('change', (e)=>{
+      updateHouseOptions(e.target.value, "house");
+    });
+
+    // เมื่อเปลี่ยนวงแชร์ใน filter
+    $('#filterPool').addEventListener('change', (e)=>{
+      state.filters.pool = e.target.value;
+      updateHouseOptions(e.target.value, "filterHouse");
+      render();
+    });
+    
+    $('#filterDate').addEventListener('change', (e)=>{
+    state.filters.date = e.target.value;
+    render();
+  });
+
+  $('#filterHouse').addEventListener('change', (e)=>{ state.filters.house = e.target.value; render(); });
     $('#filterPool').addEventListener('change', (e)=>{ state.filters.pool = e.target.value; render(); });
     $('#search').addEventListener('input', (e)=>{ state.filters.q = e.target.value.trim(); render(); });
     $('#clearFilters').addEventListener('click', ()=>{ 
-      state.filters = { house:'', pool:'', q:'' }; 
+      state.filters = { house:'', pool:'', q:'', date:'' }; 
       $('#search').value = '';
+      $('#filterDate').value = '';
       render(); 
+    });
+
+    
+    $('#reportPoolFilter').addEventListener('change', (e)=>{
+      state.reportFilter.pool = e.target.value;
+      renderReports();
     });
 
     // Tab navigation events
@@ -1244,6 +1500,11 @@
         year++;
       }
       state.currentView.calendar = { month, year };
+      renderCalendar();
+    });
+
+    $('#calendarPoolFilter').addEventListener('change', (e)=>{
+      state.calendarFilter.pool = e.target.value;
       renderCalendar();
     });
 
@@ -1335,8 +1596,73 @@
         }
       }
     
+    
+  // ====== Dynamic house groups ======
+  $('#poolHouseCount').addEventListener('change', (e)=>{
+    const count = parseInt(e.target.value) || 0;
+    const container = $('#houseGroups');
+
+    // ✅ เก็บค่าที่เคยกรอก
+    const existing = [];
+    container.querySelectorAll('.house-group').forEach(group => {
+      existing.push({
+        name: group.querySelector('.house-name')?.value || '',
+        hands: group.querySelector('.house-hands')?.value || '',
+        amount: group.querySelector('.house-amount')?.value || ''
+      });
+    });
+
+    container.innerHTML = '';
+    for(let i=0;i<count;i++){
+      const div = document.createElement('div');
+      div.className = 'house-group';
+      div.innerHTML = `
+        <div class="form-group">
+          <label>ชื่อบ้าน/กลุ่ม ${i+1}</label>
+          <input type="text" class="house-name" placeholder="ชื่อบ้าน/กลุ่ม">
+        </div>
+        <div class="form-group">
+          <label>จำนวนมือ</label>
+          <input type="number" class="house-hands" min="1" placeholder="จำนวนมือ">
+        </div>
+        <div class="form-group">
+          <label>จำนวนเงิน</label>
+          <input type="number" class="house-amount" min="0" step="100" placeholder="จำนวนเงิน">
+        </div>
+      `;
+      container.appendChild(div);
+
+      // ✅ ใส่ค่าที่เคยกรอกกลับมา ถ้ามี
+      if (existing[i]) {
+        div.querySelector('.house-name').value = existing[i].name;
+        div.querySelector('.house-hands').value = existing[i].hands;
+        div.querySelector('.house-amount').value = existing[i].amount;
+      }
+    }
+  });
+
     // initial render
     render();
-  </script>
+  
+  // ✅ ป้องกันการ scroll หน้าเพจเมื่อแก้ไข input ในตาราง
+  document.addEventListener('wheel', function (e) {
+    const activeEl = document.activeElement;
+    if (activeEl && activeEl.tagName === 'INPUT' && activeEl.closest('#dataTable')) {
+      e.stopPropagation(); // ไม่ให้ส่งต่อ event
+    }
+  }, { passive: true });
+
+  // ✅ จัดการเลื่อนแนวนอนของตารางแทนการเลื่อนหน้า
+  const tableWrap = document.querySelector('.table-wrap');
+  if (tableWrap) {
+    tableWrap.addEventListener('wheel', function (e) {
+      if (e.deltaY !== 0) {
+        tableWrap.scrollLeft += e.deltaY; // เลื่อนซ้าย-ขวาแทนเลื่อนเพจ
+        e.preventDefault();
+      }
+    }, { passive: false });
+  }
+
+</script>
 </body>
 </html>
